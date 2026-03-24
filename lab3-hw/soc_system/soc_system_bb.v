@@ -68,13 +68,13 @@ module soc_system (
 	hps_ddr3_oct_rzqin,
 	reset_reset_n,
 	vga_b,
-	vga_blank_n,
 	vga_clk,
 	vga_g,
 	vga_hs,
 	vga_r,
-	vga_sync_n,
-	vga_vs);	
+	vga_vs,
+	vga_blank_n,
+	vga_sync_n);	
 
 	input		clk_clk;
 	output		hps_hps_io_emac1_inst_TX_CLK;
@@ -144,11 +144,11 @@ module soc_system (
 	input		hps_ddr3_oct_rzqin;
 	input		reset_reset_n;
 	output	[7:0]	vga_b;
-	output		vga_blank_n;
 	output		vga_clk;
 	output	[7:0]	vga_g;
 	output		vga_hs;
 	output	[7:0]	vga_r;
-	output		vga_sync_n;
 	output		vga_vs;
+	output		vga_blank_n;
+	output		vga_sync_n;
 endmodule

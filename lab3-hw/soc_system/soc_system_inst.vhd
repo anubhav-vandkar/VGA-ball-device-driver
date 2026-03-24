@@ -68,13 +68,13 @@
 			hps_ddr3_oct_rzqin           : in    std_logic                     := 'X';             -- oct_rzqin
 			reset_reset_n                : in    std_logic                     := 'X';             -- reset_n
 			vga_b                        : out   std_logic_vector(7 downto 0);                     -- b
-			vga_blank_n                  : out   std_logic;                                        -- blank_n
 			vga_clk                      : out   std_logic;                                        -- clk
 			vga_g                        : out   std_logic_vector(7 downto 0);                     -- g
 			vga_hs                       : out   std_logic;                                        -- hs
 			vga_r                        : out   std_logic_vector(7 downto 0);                     -- r
-			vga_sync_n                   : out   std_logic;                                        -- sync_n
-			vga_vs                       : out   std_logic                                         -- vs
+			vga_vs                       : out   std_logic;                                        -- vs
+			vga_blank_n                  : out   std_logic;                                        -- blank_n
+			vga_sync_n                   : out   std_logic                                         -- sync_n
 		);
 	end component soc_system;
 
@@ -148,12 +148,12 @@
 			hps_ddr3_oct_rzqin           => CONNECTED_TO_hps_ddr3_oct_rzqin,           --         .oct_rzqin
 			reset_reset_n                => CONNECTED_TO_reset_reset_n,                --    reset.reset_n
 			vga_b                        => CONNECTED_TO_vga_b,                        --      vga.b
-			vga_blank_n                  => CONNECTED_TO_vga_blank_n,                  --         .blank_n
 			vga_clk                      => CONNECTED_TO_vga_clk,                      --         .clk
 			vga_g                        => CONNECTED_TO_vga_g,                        --         .g
 			vga_hs                       => CONNECTED_TO_vga_hs,                       --         .hs
 			vga_r                        => CONNECTED_TO_vga_r,                        --         .r
-			vga_sync_n                   => CONNECTED_TO_vga_sync_n,                   --         .sync_n
-			vga_vs                       => CONNECTED_TO_vga_vs                        --         .vs
+			vga_vs                       => CONNECTED_TO_vga_vs,                       --         .vs
+			vga_blank_n                  => CONNECTED_TO_vga_blank_n,                  --         .blank_n
+			vga_sync_n                   => CONNECTED_TO_vga_sync_n                    --         .sync_n
 		);
 

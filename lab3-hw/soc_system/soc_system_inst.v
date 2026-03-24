@@ -67,12 +67,12 @@
 		.hps_ddr3_oct_rzqin           (<connected-to-hps_ddr3_oct_rzqin>),           //         .oct_rzqin
 		.reset_reset_n                (<connected-to-reset_reset_n>),                //    reset.reset_n
 		.vga_b                        (<connected-to-vga_b>),                        //      vga.b
-		.vga_blank_n                  (<connected-to-vga_blank_n>),                  //         .blank_n
 		.vga_clk                      (<connected-to-vga_clk>),                      //         .clk
 		.vga_g                        (<connected-to-vga_g>),                        //         .g
 		.vga_hs                       (<connected-to-vga_hs>),                       //         .hs
 		.vga_r                        (<connected-to-vga_r>),                        //         .r
-		.vga_sync_n                   (<connected-to-vga_sync_n>),                   //         .sync_n
-		.vga_vs                       (<connected-to-vga_vs>)                        //         .vs
+		.vga_vs                       (<connected-to-vga_vs>),                       //         .vs
+		.vga_blank_n                  (<connected-to-vga_blank_n>),                  //         .blank_n
+		.vga_sync_n                   (<connected-to-vga_sync_n>)                    //         .sync_n
 	);
 
