@@ -1,2 +1,5 @@
-linux-headers*
+linux-headers-4.19.0/
 *.gz
+
+# MacOS system files
+.DS_Store

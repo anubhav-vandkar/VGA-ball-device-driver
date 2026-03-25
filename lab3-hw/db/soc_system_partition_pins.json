@@ -444,10 +444,6 @@
 					"strict" : false
 				},
 				{
-					"name" : "VGA_SYNC_N",
-					"strict" : false
-				},
-				{
 					"name" : "VGA_VS",
 					"strict" : false
 				},

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <EnsembleReport name="soc_system" kind="system" version="21.1" fabric="QSYS">
  <!-- Format version 21.1 842 (Future versions may contain additional information.) -->
- <!-- 2026.03.24.16:38:49 -->
+ <!-- 2026.03.24.21:08:16 -->
  <!-- A collection of modules and connections -->
  <parameter name="clockCrossingAdapter">
   <type>com.altera.sopcmodel.ensemble.EClockAdapter</type>
@@ -53,7 +53,7 @@
  </parameter>
  <parameter name="generationId">
   <type>int</type>
-  <value>1774384705</value>
+  <value>1774400874</value>
   <derived>false</derived>
   <enabled>true</enabled>
   <visible>true</visible>
@@ -101,7 +101,7 @@
  </parameter>
  <parameter name="projectName">
   <type>java.lang.String</type>
-  <value>soc_system.qpf</value>
+  <value></value>
   <derived>false</derived>
   <enabled>true</enabled>
   <visible>false</visible>
@@ -42544,6 +42544,12 @@ parameters are a RESULT of the module parameters. -->
     <role>b</role>
    </port>
    <port>
+    <name>VGA_BLANK_n</name>
+    <direction>Output</direction>
+    <width>1</width>
+    <role>blank_n</role>
+   </port>
+   <port>
     <name>VGA_CLK</name>
     <direction>Output</direction>
     <width>1</width>
@@ -42568,22 +42574,16 @@ parameters are a RESULT of the module parameters. -->
     <role>r</role>
    </port>
    <port>
-    <name>VGA_VS</name>
-    <direction>Output</direction>
-    <width>1</width>
-    <role>vs</role>
-   </port>
-   <port>
-    <name>VGA_BLANK_n</name>
-    <direction>Output</direction>
-    <width>1</width>
-    <role>blank_n</role>
-   </port>
-   <port>
     <name>VGA_SYNC_n</name>
     <direction>Output</direction>
     <width>1</width>
     <role>sync_n</role>
+   </port>
+   <port>
+    <name>VGA_VS</name>
+    <direction>Output</direction>
+    <width>1</width>
+    <role>vs</role>
    </port>
   </interface>
  </module>
@@ -44813,5 +44813,5 @@ parameters are a RESULT of the module parameters. -->
   <version>21.1</version>
  </plugin>
  <reportVersion>21.1 842</reportVersion>
- <uniqueIdentifier>CC96E51A77140000019D21921B0A</uniqueIdentifier>
+ <uniqueIdentifier>CC96E51A70BE0000019D2288CFFC</uniqueIdentifier>
 </EnsembleReport>

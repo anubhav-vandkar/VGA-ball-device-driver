@@ -72,13 +72,13 @@ module soc_system (
 		input  wire        hps_ddr3_oct_rzqin,           //         .oct_rzqin
 		input  wire        reset_reset_n,                //    reset.reset_n
 		output wire [7:0]  vga_b,                        //      vga.b
+		output wire        vga_blank_n,                  //         .blank_n
 		output wire        vga_clk,                      //         .clk
 		output wire [7:0]  vga_g,                        //         .g
 		output wire        vga_hs,                       //         .hs
 		output wire [7:0]  vga_r,                        //         .r
-		output wire        vga_vs,                       //         .vs
-		output wire        vga_blank_n,                  //         .blank_n
-		output wire        vga_sync_n                    //         .sync_n
+		output wire        vga_sync_n,                   //         .sync_n
+		output wire        vga_vs                        //         .vs
 	);
 
 	wire   [1:0] hps_0_h2f_lw_axi_master_awburst;                        // hps_0:h2f_lw_AWBURST -> mm_interconnect_0:hps_0_h2f_lw_axi_master_awburst
@@ -319,13 +319,13 @@ module soc_system (
 		.chipselect  (mm_interconnect_0_vga_ball_0_avalon_slave_0_chipselect), //               .chipselect
 		.address     (mm_interconnect_0_vga_ball_0_avalon_slave_0_address),    //               .address
 		.VGA_B       (vga_b),                                                  //            vga.b
+		.VGA_BLANK_n (vga_blank_n),                                            //               .blank_n
 		.VGA_CLK     (vga_clk),                                                //               .clk
 		.VGA_G       (vga_g),                                                  //               .g
 		.VGA_HS      (vga_hs),                                                 //               .hs
 		.VGA_R       (vga_r),                                                  //               .r
-		.VGA_VS      (vga_vs),                                                 //               .vs
-		.VGA_BLANK_n (vga_blank_n),                                            //               .blank_n
-		.VGA_SYNC_n  (vga_sync_n)                                              //               .sync_n
+		.VGA_SYNC_n  (vga_sync_n),                                             //               .sync_n
+		.VGA_VS      (vga_vs)                                                  //               .vs
 	);
 
 	soc_system_mm_interconnect_0 mm_interconnect_0 (

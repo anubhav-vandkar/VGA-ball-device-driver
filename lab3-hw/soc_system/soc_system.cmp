@@ -68,13 +68,13 @@
 			hps_ddr3_oct_rzqin           : in    std_logic                     := 'X';             -- oct_rzqin
 			reset_reset_n                : in    std_logic                     := 'X';             -- reset_n
 			vga_b                        : out   std_logic_vector(7 downto 0);                     -- b
+			vga_blank_n                  : out   std_logic;                                        -- blank_n
 			vga_clk                      : out   std_logic;                                        -- clk
 			vga_g                        : out   std_logic_vector(7 downto 0);                     -- g
 			vga_hs                       : out   std_logic;                                        -- hs
 			vga_r                        : out   std_logic_vector(7 downto 0);                     -- r
-			vga_vs                       : out   std_logic;                                        -- vs
-			vga_blank_n                  : out   std_logic;                                        -- blank_n
-			vga_sync_n                   : out   std_logic                                         -- sync_n
+			vga_sync_n                   : out   std_logic;                                        -- sync_n
+			vga_vs                       : out   std_logic                                         -- vs
 		);
 	end component soc_system;
 
