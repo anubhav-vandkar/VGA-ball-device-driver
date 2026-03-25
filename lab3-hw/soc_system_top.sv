@@ -266,7 +266,7 @@ module soc_system_top(
      .hps_hps_io_gpio_inst_GPIO48  ( HPS_I2C_CONTROL ),
      .hps_hps_io_gpio_inst_GPIO53  ( HPS_LED ),
      .hps_hps_io_gpio_inst_GPIO54  ( HPS_KEY ),
-     .hps_hps_io_gpio_inst_GPIO61  ( HPS_GSENSOR_INT )
+     .hps_hps_io_gpio_inst_GPIO61  ( HPS_GSENSOR_INT ),
 
      // VGA Wiring
      .vga_r                        (VGA_R),
