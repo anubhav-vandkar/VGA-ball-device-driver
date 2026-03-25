@@ -14,12 +14,11 @@
 
 module vga_ball(input logic        clk,
                 input logic        reset,
-                input logic [7:0]  writedata,
+                input logic [7:0]  writedata, // Christian's Claude Notes: We will prob need to update this to 16 bits to fit the 640 x 480 resolution. See section 2.2. We will pass in x,y coordinates.
                 input logic        write,
                 input logic        chipselect,
-                input logic [2:0]  address,
-
-                output logic [7:0] VGA_R, VGA_G, VGA_B,
+                input logic [2:0]  address, // Christian's Claude Notes: We will need to update this to fit the x and y coordinate registers.
+                output logic [7:0] VGA_R, VGA_G, VGA_B, 
                 output logic       VGA_CLK, VGA_HS, VGA_VS,
                                    VGA_BLANK_n,
                 output logic       VGA_SYNC_n);
@@ -28,9 +27,12 @@ module vga_ball(input logic        clk,
    logic [9:0]     vcount;
 
    logic [7:0]     background_r, background_g, background_b;
+
+   // Christan's Claude Notes: We will need registers to store x and y coordinates.
         
    vga_counters counters(.clk50(clk), .*);
 
+  // Christian's Claude Notes: Need to update the `always_ff` block to handle writing to the x and y coordinate registers. 
    always_ff @(posedge clk)
      if (reset) begin
         background_r <= 8'h0;
@@ -46,6 +48,9 @@ module vga_ball(input logic        clk,
    always_comb begin
       {VGA_R, VGA_G, VGA_B} = {8'h0, 8'h0, 8'h0};
       if (VGA_BLANK_n )
+        // Christian's Claude Notes: We will need to update the hcount and vcount values to check if we are within the bounds of a ball.
+        // Christian's Claude Notes: Look up how we can calculate a ball's shape w/ the equation of a circle.
+        // Christian's Claude Notes: Currently, we make a square.   
         if (hcount[10:6] == 5'd3 &&
             vcount[9:5] == 5'd3)
           {VGA_R, VGA_G, VGA_B} = {8'hff, 8'hff, 8'hff};
@@ -133,3 +138,20 @@ module vga_counters(
    assign VGA_CLK = hcount[0]; // 25 MHz clock: rising edge sensitive
    
 endmodule
+
+
+// Extra Christian's Notes:
+// "You may observe that your ball “tears” as it moves across the screen. This is caused by
+// changing the ball’s coordinates while one of its lines is being generated. To fix this, make
+// it so that your ball’s coordinates only change when other lines are being displayed." - Lab 3 Handout.
+// 
+// ======= Claude Notes =======
+//
+// Handle the Tearing Problem
+// Screen tearing happens when you update the ball's coordinates while the electron beam is currently drawing that part of the screen. Halfway through drawing a frame the ball suddenly jumps, causing a torn appearance.
+// The fix conceptually is to have two sets of coordinate registers:
+
+// A buffer register that the processor writes to anytime it wants
+// An active register that the drawing logic actually uses
+
+// You only copy from the buffer to the active register during the vertical blanking interval — the period between frames when no pixels are being drawn (when vcount is greater than 480). This way the ball position only ever updates between complete frames, never mid-frame.
