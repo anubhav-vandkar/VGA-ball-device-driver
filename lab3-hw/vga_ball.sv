@@ -14,7 +14,7 @@
 
 module vga_ball(input logic        clk,
                 input logic        reset,
-                input logic [32:0]  writedata, // Updated to 32 bits: left 10 for x, right 9 for y 
+                input logic [31:0]  writedata, // Updated to 32 bits: left 10 for x, right 9 for y 
                 input logic        write,
                 input logic        chipselect,
                 input logic [2:0]  address, 
