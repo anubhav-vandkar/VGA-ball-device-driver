@@ -37,8 +37,9 @@
 
 /* Device registers */
 #define BG_RED(x) (x)
-#define BG_GREEN(x) ((x)+1)
-#define BG_BLUE(x) ((x)+2)
+#define BG_GREEN(x) ((x)+4)
+#define BG_BLUE(x) ((x)+8)
+#define POS(x) ((x)+12)
 
 /*
  * Information about our device
@@ -47,6 +48,7 @@ struct vga_ball_dev {
 	struct resource res; /* Resource: our registers */
 	void __iomem *virtbase; /* Where registers can be accessed in memory */
         vga_ball_color_t background;
+		vga_ball_pos_t position;
 } dev;
 
 /*
@@ -55,10 +57,23 @@ struct vga_ball_dev {
  */
 static void write_background(vga_ball_color_t *background)
 {
-	iowrite8(background->red, BG_RED(dev.virtbase) );
-	iowrite8(background->green, BG_GREEN(dev.virtbase) );
-	iowrite8(background->blue, BG_BLUE(dev.virtbase) );
+	//changed from iowrite8 to iowrite32 
+	//also changed mw.b offsets to 0, 4, 8 instead of 0, 1, 2 to accomodate 32 bit writes
+	// now the commands are
+	// mw.b ff200000/ff200004/ff200008
+	iowrite32(background->red, BG_RED(dev.virtbase) );
+	iowrite32(background->green, BG_GREEN(dev.virtbase) );
+	iowrite32(background->blue, BG_BLUE(dev.virtbase) );
 	dev.background = *background;
+}
+
+static void write_position(vga_ball_pos_t *pos)
+{
+	//x is [31:22] and y is [8:0] of the 32 bit value written to POS register]
+	unsigned int pos_value;
+	memset(&pos_value, 0, sizeof(pos_value));
+	pos_value = (pos->x << 22) | pos->y;
+	iowrite32(pos_value, POS(dev.virtbase) );
 }
 
 /*
@@ -69,6 +84,7 @@ static void write_background(vga_ball_color_t *background)
 static long vga_ball_ioctl(struct file *f, unsigned int cmd, unsigned long arg)
 {
 	vga_ball_arg_t vla;
+	vga_ball_pos_t pos;
 
 	switch (cmd) {
 	case VGA_BALL_WRITE_BACKGROUND:
@@ -83,6 +99,13 @@ static long vga_ball_ioctl(struct file *f, unsigned int cmd, unsigned long arg)
 		if (copy_to_user((vga_ball_arg_t *) arg, &vla,
 				 sizeof(vga_ball_arg_t)))
 			return -EACCES;
+		break;
+
+	case VGA_BALL_WRITE_POSITION:
+		if (copy_from_user(&pos, (vga_ball_pos_t *) arg,
+				   sizeof(vga_ball_pos_t)))
+			return -EACCES;
+		write_position(&pos);
 		break;
 
 	default:

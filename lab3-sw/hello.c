@@ -40,9 +40,24 @@ void set_background_color(const vga_ball_color_t *c)
   }
 }
 
+void set_ball_position(const vga_ball_pos_t *pos)
+{
+  vga_ball_pos_t new_pos;
+  new_pos = *pos;
+  if (ioctl(vga_ball_fd, VGA_BALL_WRITE_POSITION, &new_pos)) {
+      perror("ioctl(VGA_BALL_SET_POSITION) failed");
+      return;
+  }
+}
+
 int main()
 {
   vga_ball_arg_t vla;
+  vga_ball_pos_t pos;
+
+  horizontal_dir h_dir = RIGHT;
+  vertical_dir v_dir = DOWN;
+
   int i;
   static const char filename[] = "/dev/vga_ball";
 
@@ -58,7 +73,7 @@ int main()
     { 0xff, 0xff, 0xff }  /* White */
   };
 
-# define COLORS 9
+ #define COLORS 9
 
   printf("VGA ball Userspace program started\n");
 
@@ -70,10 +85,38 @@ int main()
   printf("initial state: ");
   print_background_color();
 
-  for (i = 0 ; i < 24 ; i++) {
-    set_background_color(&colors[i % COLORS ]);
-    print_background_color();
-    usleep(400000);
+  // Generate random pos of centre that is confined to the screen with a margin of VGA_BALL_RADIUS
+  // boundaries would be X: radius - WIDTH-radius and Y: radius to HEIGHT - radius 
+  pos.x = (rand() % (WIDTH - 2*VGA_BALL_RADIUS)) + VGA_BALL_RADIUS;
+  pos.y = (rand() % (HEIGHT - 2*VGA_BALL_RADIUS)) + VGA_BALL_RADIUS;
+  set_ball_position(&pos);
+
+  int i=0;
+
+  while (1) {
+    // set_background_color(&colors[i % COLORS ]);
+    // print_background_color();
+    // usleep(400000);
+
+    // Move the ball in diagonal directions with bounce off the walls
+    pos.x += (h_dir == RIGHT) ? 1 : -1;
+    pos.y += (v_dir == DOWN) ? 1 : -1;
+
+    set_ball_position(&pos);
+
+    //when direction changes, change the background color and change direction
+    if((pos.x > WIDTH - VGA_BALL_RADIUS) || (pos.x < VGA_BALL_RADIUS)) {
+        h_dir = !h_dir;
+        set_background_color(&colors[i]);
+        i = (i + 1) % COLORS;
+    }
+    if((pos.y > HEIGHT - VGA_BALL_RADIUS) || (pos.y < VGA_BALL_RADIUS)) {
+        v_dir = !v_dir;
+        set_background_color(&colors[i % COLORS ]);
+        i = (i + 1) % COLORS;
+    }
+
+    usleep(10000);
   }
   
   printf("VGA BALL Userspace program terminating\n");
