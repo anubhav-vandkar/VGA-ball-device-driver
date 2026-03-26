@@ -69,7 +69,7 @@ static void write_background(vga_ball_color_t *background)
 
 static void write_position(vga_ball_pos_t *pos)
 {
-	//x is [31:22] and y is [8:0] of the 32 bit value written to POS register]
+	//x is [31:22] and y is [8:0] of the 32 bit value written
 	unsigned int pos_value;
 	memset(&pos_value, 0, sizeof(pos_value));
 	pos_value = (pos->x << 22) | pos->y;

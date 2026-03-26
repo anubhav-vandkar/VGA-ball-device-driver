@@ -7,9 +7,10 @@
  * Register map:
  * 
  * Byte Offset  7 ... 0   Meaning
- *        0    |  Red  |  Red component of background color (0-255)
- *        1    | Green |  Green component
- *        2    | Blue  |  Blue component
+ *        0    |  Red [7:0]  |  Red component of background color (0-255)
+ *        4    | Green [7:0] |  Green component
+ *        8    | Blue [7:0]  |  Blue component
+ *       c (12)|  x[31:22] y[8:0]   |  coordinates of ball center (0-639)
  */
 
 module vga_ball(input logic        clk,
@@ -28,10 +29,9 @@ module vga_ball(input logic        clk,
 
   logic [7:0]     background_r, background_g, background_b;
 
-  // Christan's Claude Notes: We will need registers to store x (10 bits) and y (9 bits) coordinates.
   logic [9:0]    center_x = 10'd320; 
   logic [8:0]    center_y = 9'd240; //center of ball = center of screen
-  logic [20:0]   radius_sq = 21'd1024; //radius sq of ball
+  logic [20:0]   radius_sq = 21'd1024; //radius sq of ball (32)
 
   //making ball circular : (x-center_x)^2 + (y-center_y)^2 <= radius^2
   logic [9:0]    dx;
@@ -77,9 +77,6 @@ module vga_ball(input logic        clk,
   always_comb begin
     {VGA_R, VGA_G, VGA_B} = {8'h0, 8'h0, 8'h0};
     if (VGA_BLANK_n )
-      // Christian's Claude Notes: We will need to update the hcount and vcount values to check if we are within the bounds of a ball.
-      // Christian's Claude Notes: Look up how we can calculate a ball's shape w/ the equation of a circle.
-      // Christian's Claude Notes: Currently, we make a square.  
 
       // SQUARE 
       //if (hcount[10:6] == 5'd3 &&
@@ -172,20 +169,3 @@ module vga_counters(
    assign VGA_CLK = hcount[0]; // 25 MHz clock: rising edge sensitive
    
 endmodule
-
-
-// Extra Christian's Notes:
-// "You may observe that your ball “tears” as it moves across the screen. This is caused by
-// changing the ball’s coordinates while one of its lines is being generated. To fix this, make
-// it so that your ball’s coordinates only change when other lines are being displayed." - Lab 3 Handout.
-// 
-// ======= Claude Notes =======
-//
-// Handle the Tearing Problem
-// Screen tearing happens when you update the ball's coordinates while the electron beam is currently drawing that part of the screen. Halfway through drawing a frame the ball suddenly jumps, causing a torn appearance.
-// The fix conceptually is to have two sets of coordinate registers:
-
-// A buffer register that the processor writes to anytime it wants
-// An active register that the drawing logic actually uses
-
-// You only copy from the buffer to the active register during the vertical blanking interval — the period between frames when no pixels are being drawn (when vcount is greater than 480). This way the ball position only ever updates between complete frames, never mid-frame.

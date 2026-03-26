@@ -69,7 +69,7 @@ int main()
     { 0xff, 0x00, 0xff }, /* Magenta */
     { 0x80, 0x80, 0x80 }, /* Gray */
     { 0x00, 0x00, 0x00 }, /* Black */
-    //{ 0xff, 0xff, 0xff }  /* White */
+    //{ 0xff, 0xff, 0xff }  /* White removed because it hides ball*/ 
   };
 
  #define COLORS 9
@@ -104,15 +104,15 @@ int main()
     set_ball_position(&pos);
 
     //when direction changes, change the background color and change direction
-    if((pos.x > WIDTH - VGA_BALL_RADIUS - 40) || (pos.x < VGA_BALL_RADIUS)) {
-        h_dir = !h_dir;
-        set_background_color(&colors[i]);
-        i = (i + 1) % COLORS;
+    if((pos.x > WIDTH - VGA_BALL_RADIUS - 40 /* device specific issue */) || (pos.x < VGA_BALL_RADIUS)) {
+      h_dir = !h_dir;
+      set_background_color(&colors[i]);
+      i = (i + 1) % COLORS;
     }
     if((pos.y > HEIGHT - VGA_BALL_RADIUS) || (pos.y < VGA_BALL_RADIUS)) {
-        v_dir = !v_dir;
-        set_background_color(&colors[i]);
-        i = (i + 1) % COLORS;
+      v_dir = !v_dir;
+      set_background_color(&colors[i]);
+      i = (i + 1) % COLORS;
     }
 
     usleep(10000);
