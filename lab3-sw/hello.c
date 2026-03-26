@@ -58,7 +58,6 @@ int main()
   horizontal_dir h_dir = RIGHT;
   vertical_dir v_dir = DOWN;
 
-  int i;
   static const char filename[] = "/dev/vga_ball";
 
   static const vga_ball_color_t colors[] = {
