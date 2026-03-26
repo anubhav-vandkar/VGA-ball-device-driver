@@ -29,18 +29,22 @@ module vga_ball(input logic        clk,
   logic [7:0]     background_r, background_g, background_b;
 
   // Christan's Claude Notes: We will need registers to store x (10 bits) and y (9 bits) coordinates.
-  logic [10:0]    center_x = 11'd320; 
-  logic [9:0]    center_y = 10'd240; //center of ball = center of screen
-  logic [20:0]    radius_sq = 21'd256; //radius of ball
+  logic [9:0]    center_x = 11'd320; 
+  logic [8:0]    center_y = 10'd240; //center of ball = center of screen
+  logic [20:0]   radius_sq = 21'd256; //radius of ball
 
   //making ball circular : (x-center_x)^2 + (y-center_y)^2 <= radius^2
-  logic [10:0]    dx;
-  logic [9:0]     dy;
-  logic [20:0]    distance_squared;
+  logic [9:0]    dx;
+  logic [8:0]    dy;
+  logic [19:0]   dx_sq;
+  logic [17:0]   dy_sq;
+  logic [20:0]   distance_sq;
 
   assign dx = (hcount > center_x) ? (hcount - center_x) : (center_x - hcount);
   assign dy = (vcount > center_y) ? (vcount - center_y) : (center_y - vcount);
-  assign distance_squared = dx*dx + dy*dy;
+  assign dx_sq = dx * dx;
+  assign dy_sq = dy * dy;
+  assign distance_sq = dx_sq + dy_sq;
 
   vga_counters counters(.clk50(clk), .*);
 
@@ -52,6 +56,7 @@ module vga_ball(input logic        clk,
 
       center_x <= 11'd320; 
       center_y <= 10'd240; 
+      radius_sq <= 21'd256;
     end else if (chipselect && write)
     //assign actual center to write data having x and y coords
       // center_x <= writedata[32:23]; //x coordinate in upper 10 bits
@@ -81,7 +86,7 @@ module vga_ball(input logic        clk,
       //    vcount[9:5] == 5'd3)
 
       // CIRCLE
-      if(distance_squared <= radius_sq)
+      if(distance_sq <= radius_sq)
         {VGA_R, VGA_G, VGA_B} = {8'hff, 8'hff, 8'hff};
       else
         {VGA_R, VGA_G, VGA_B} =
