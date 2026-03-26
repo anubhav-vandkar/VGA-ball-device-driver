@@ -63,9 +63,9 @@ module vga_ball(input logic        clk,
       // center_y <= writedata[8:0];  //y coordinate in lower 9 bits
 
       case (address)
-        3'h0 : background_r <= writedata;
-        3'h1 : background_g <= writedata;
-        3'h2 : background_b <= writedata;
+        3'h0 : background_r <= writedata[7:0];
+        3'h1 : background_g <= writedata[7:0];
+        3'h2 : background_b <= writedata[7:0];
         3'h3 : begin
           center_x <= writedata[31:22]; //x coordinate in upper 10 bits
           center_y <= writedata[8:0];  //y coordinate in lower 9 bits
